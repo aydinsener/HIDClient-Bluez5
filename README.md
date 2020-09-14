@@ -1,74 +1,23 @@
-# hidclient
+# hidclient - Bluez 5 / Systemd
+This specific fork is for compatibility with Bluez version 5. The target system is Ubuntu 18.04, but this may work for more recent versions. The program will remain almost identical to the original, but the instructions to run it will differ.
 
-My tweaks to [hidclient](http://anselm.hoffmeister.be/computer/hidclient/index.html.en).
+## One time setup
+1. Enable bluetoothd, probably via `sudo systemctl enable bluetooth` and ensure it's been started
+2. Edit `/etc/systemd/system/dbus-org.bluez.service` and perform the following change:
+```bash
+ExecStart=/usr/lib/bluetooth/bluetoothd
+                   |
+                   V
+ExecStart=/usr/lib/bluetooth/bluetoothd  --compat -P input
+```
+3. Restart the systemd daemon with `sudo systemctl daemon-reload`
 
-Original software is GPL'ed, written by Anselm Martin Hoffmeister.
+#### Notes
+- `--compat` enables the use of sdptool
+- `-P input` seems to be the only way to disable the input plugin in Bluez 5
 
-## Current status
+## Pairing
+Read `example.sh` to see an example of approximate steps to run this program and things that must happen on your Bluetooth stack for this to work. You must be able to run the program, while also having control of an input device so that you may pair either through `bluetoothctl` (`discoverable on` + `default-agent`), or something like `Blueman`
 
-Currently, this works, but it's definitely not a smooth setup process. Quirks:
-
-- Requires `--compat` flag to `bluetoothd`
-    - (possibly unneeded if not publishing SDP records)
-- Only works once per `bluetoothd` session
-    - Need to restart `bluetooth` service on host after disconnecting client
-- `bluetoothd` needs to be restarted *after* `hidclient` is started
-
-## Full example usage
-
-This is what works for me running Arch Linux on both machines.
-
-### One-time setup steps
-
-On host machine:
-
-    ## compile this software
-    [host hidclient]$ make
-
-    ## Edit /usr/lib/systemd/system/bluetooth.service to change this line:
-    ExecStart=/usr/lib/bluetooth/bluetoothd
-
-    ## To:
-    ExecStart=/usr/lib/bluetooth/bluetoothd --compat
-
-    ## Determine correct IDs for use below:
-    [host hidclient]$ XAUTHORITY=$HOME/.Xauthority sudo ./hidclient -l
-
-### Each time connecting
-
-On the system running hidclient, in the source directory:
-
-    ## The numbers provided to the -e flag(s) will vary for your system
-    [host hidclient]$ XAUTHORITY=$HOME/.Xauthority sudo ./hidclient -x -e0 -e17 -e18
-      HID keyboard/mouse service registered
-      Opened /dev/input/event0 as event device [counter 0]
-      Opened /dev/input/event17 as event device [counter 1]
-      Opened /dev/input/event18 as event device [counter 2]
-      The HID-Client is now ready to accept connections from another machine
-
-On the system running hidclient, in another terminal emulator:
-
-    [host ~]$ sudo systemctl restart bluetooth.service
-    [host ~]$ bluetoothctl
-      [bluetooth]# power on
-      Changing power on succeeded
-      [bluetooth]# agent on
-      Agent registered
-      [bluetooth]# default-agent
-      Default agent request successful
-      [bluetooth]#
-
-On the client system:
-
-    [client ~]$ bluetoothctl
-      [bluetooth]# power on
-      Changing power on succeeded
-      [bluetooth]# agent on
-      Agent registered
-      [bluetooth]# default-agent
-      Default agent request successful
-      [bluetooth]# connect XX:XX:XX:XX:XX:XX
-      Attempting to connect to XX:XX:XX:XX:XX:XX
-      [CHG] Device XX:XX:XX:XX:XX:XX Connected: yes
-      Connection successful
-      [host]#
+## Running
+Use essentially the same steps as above, just instead of attempting to pair, manually connect. This is easy with `bluetoothctl`, and can be automated with `echo "xx:xx:xx:xx:xx:xx" | bluetoothctl`
