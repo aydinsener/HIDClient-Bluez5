@@ -1,6 +1,8 @@
 # hidclient - Bluez 5 / Systemd
 This specific fork is for compatibility with Bluez version 5. The target system is Ubuntu 18.04, but this may work for more recent versions. The program will remain almost identical to the original, but the instructions to run it will differ.
 
+This setup specifically works for a Ps4, as you need the Pause key to act as the PS Button - this has been changed to Scroll Lock in this fork, check line `802` if you would like to edit it
+
 ## One time setup
 1. Enable bluetoothd, probably via `sudo systemctl enable bluetooth` and ensure it's been started
 2. Edit `/etc/systemd/system/dbus-org.bluez.service` and perform the following change:

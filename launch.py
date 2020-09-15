@@ -12,7 +12,7 @@ import os, subprocess, shlex, time
 if os.geteuid() != 0:
 	exit("This must be run as root")
 
-print("IF YOUR KEYBOARD HAS BEEN TAKEN, PRESS CTRL+ALT+PAUSE TO EXIT\n") #this is the bind to exit hidclient
+print("IF YOUR KEYBOARD HAS BEEN TAKEN, PRESS Ctrl+Alt+ScrLk TO EXIT\n") #this is the bind to exit hidclient
 
 print("Will be connecting to: [%s]" % (CONNECT_TO) if CONNECT_TO else "Will be attempting to pair...\nRemember to add the MAC address of the connected device to this script!")
 print("") #don't get drowned

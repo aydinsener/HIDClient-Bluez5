@@ -5,8 +5,8 @@
  *		combination device - use it to transmit mouse movements and
  *		keyboard keystrokes from a Linux box to any other BTHID enabled
  *		computer or compatible machine
- * 
- * 
+ *
+ *
  * Implementation
  * 2004-2006	by Anselm Martin Hoffmeister
  * 		   <stockholm(at)users(period)sourceforge(period)net>
@@ -15,12 +15,12 @@
  * 		Rheinische Friedrich-Wilhelms-UniversitÃ€t, Bonn, Germany
  * 2006		Software ported to Bluez, several code cleanups
  * 2006-07-25	First public release
- * 
+ *
  * Updates
  * 2012-02-10	by Peter G
  *		Updated to work with current distro (Lubuntu 11.10)
  *		EDIT FILE /etc/bluetooth/main.conf
- *		to include:	
+ *		to include:
  *			DisablePlugins = network,input,hal,pnat
  *		AMH: Just disable input might be good enough.
  *		recomended to change:
@@ -51,7 +51,7 @@
  *		Ubuntu 12.04 LTS on amd64
  *		Added -e, -l, -x
  * 2012-07-28	Add support for FIFO operation (-f/filename)
- * 
+ *
  * Dependency:	Needs libbluetooth (from bluez)
  *
  * Usage:	hidclient [-h|-?|--help] [-s|--skipsdp]
@@ -77,7 +77,7 @@
  *		this should simply disattach input devices from the local
  *		machine while hidclient is running (and hopefully, reattach
  *		them afterwards, of course).
- * 		
+ *
  * License:
  *		This program is free software; you can redistribute it and/or
  *		modify it under the terms of the GNU General Public License as
@@ -201,7 +201,7 @@ uint32_t	sdphandle	 = 0;	// To be used to "unregister" on exit
 int		debugevents      = 0;	// bitmask for debugging event data
 
 //***************** Implementation
-/* 
+/*
  * Taken from bluetooth library because of suspicious memory allocation
  * THIS IS A HACK that appears to work, and did not need to look into how it works
  * SHOULD BE FIXED AND FIX BACKPORTED TO BLUEZ
@@ -798,8 +798,8 @@ int	parse_events ( fd_set * efds, int sockdesc )
 					return	-1;
 				}
 				break;
-			  // *** Special key: PAUSE
-			  case	KEY_PAUSE:	
+			  // *** Special key: SCROLL LOCK
+			  case	KEY_SCROLLLOCK:
 				// When pressed: abort connection
 				if ( inevent->value == 0 )
 				{
@@ -884,9 +884,8 @@ int	parse_events ( fd_set * efds, int sockdesc )
 			  case	KEY_PAGEUP:	++u;
 			  case	KEY_HOME:	++u;
 			  case	KEY_INSERT:	++u;
-						++u; //[Pause] key
-						// - checked separately
-			  case	KEY_SCROLLLOCK:	++u;
+			  case  KEY_PAUSE:	++u;
+			  ++u; //case	KEY_SCROLLLOCK:	++u; - scroll lock used instead of PAUSE now
 			  case	KEY_SYSRQ:	++u; //[printscr]
 			  case	KEY_F12:	++u; //F12=> code 69
 			  case	KEY_F11:	++u;
@@ -988,7 +987,7 @@ int	parse_events ( fd_set * efds, int sockdesc )
 					    pressedkey[7] = 0;
 					    }
 					}
-				} 
+				}
 				else	// "Key repeat" event
 				{
 					; // This should be handled
