@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 SERVICE_NAME = "hidclient" #what the host sees
-CONNECT_TO = "EC:0E:C4:AB:70:0E" #mac address - this is my PS4
+CONNECT_TO = "" #mac address
 #CONNECT_TO = "" #set this to "" if you want to pair
 ATTACH_DEVICES = ["AT Translated Set 2 keyboard".lower()] #This is my Thinkpad keyboard - lowercase checks leave less room for error(?)
 #Use `./hidclient -l` to see the names of devices - if you connect/disconnect devices, their index may change, so this script gets the index programatically

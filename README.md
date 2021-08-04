@@ -20,7 +20,7 @@ ExecStart=/usr/lib/bluetooth/bluetoothd  --compat -P input
 - `-P input` seems to be the only way to disable the input plugin in Bluez 5
 
 ## Helper script
-Use `launch.py` to automate connecting/pairing to your host - make sure to alter to your needs as it will NOT work ootb
+DEFINITELY use `launch.py` to automate connecting/pairing to your host - make sure to alter to your needs as it will NOT work ootb
 
 ## Pairing
 Read `example.sh` to see an example of approximate steps to run this program and things that must happen on your Bluetooth stack for this to work. You must be able to run the program, while also having control of an input device so that you may pair either through `bluetoothctl` (`discoverable on` + `default-agent`), or something like `Blueman`
